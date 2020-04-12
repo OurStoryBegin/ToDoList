@@ -15,7 +15,7 @@ body {
   width: 500px;
   padding: 0;
   margin: 0 auto;
-  border-top: .3px solid #fff;
+  /* border-top: .2px solid #fff; */
 }
 
 /* header */
@@ -31,11 +31,13 @@ body {
   position: absolute;
   top: 20px;
   right: 17px;
-  transition: .5s;
+  transition: 2s;
 }
 
 .addItems i:hover {
   cursor: pointer;
+  color: #469bef;
+  font-size: 40px;
 }
 
 h1 {
@@ -73,10 +75,10 @@ h1 {
 
 .item {
   width: 500px;
-  height: 90px;
+  height: 105px;
   position: relative;
-  border-bottom: .2px solid #000;
-
+  margin: 1rem 0rem;
+  border-bottom: .1px solid #7a7a7a;
 }
 
 .above {
@@ -105,7 +107,7 @@ h1 {
   height: 40px;
   outline: none;
   background-color: transparent;
-  color: #ffffff;
+  color: gray;
   font-size: 1.4rem;
 }
 
@@ -141,7 +143,7 @@ h1 {
   margin: .5rem .5rem 1.4rem 2.5rem;
   padding: 0 .2rem 0 .1rem;
   border-radius: 3px;
-  background-color:#508080;
+  background-color: #2d3031;
 }
 
 .addDate i {
@@ -150,10 +152,13 @@ h1 {
   padding-left: .3rem;
 }
 
-.addDate p {
-  font-size: .85rem;
-  margin-top: .2rem;
+select {
+  margin-top: .05rem;
   padding-left: .3rem;
+  color: gray;
+  font-size: .8rem;
+  background-color: transparent;
+  border: none;
 }
 
 .addLoc {
@@ -161,9 +166,8 @@ h1 {
   margin: .5rem .5rem 1.4rem 0rem;
   padding: 0 .2rem 0 .1rem;
   border-radius: 3px;
-  background-color: #fff;
+  background-color: #2d3031;
 }
-
 
 .addLoc i {
   font-size: 1rem;
@@ -171,9 +175,13 @@ h1 {
   padding-left: .3rem;
 }
 
-.addLoc p {
+.addLoc input {
   font-size: .85rem;
-  margin-top: .2rem;
+  color: gray;
+  margin-top: .05rem;
   padding-left: .3rem;
+  border: none;
+  width: 95px;
+  background-color: transparent;
 }
 
