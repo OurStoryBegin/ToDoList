@@ -6,7 +6,7 @@
 
 body {
   margin-top: 50px;
-  /* background-color: #222224; */
+  background-color: #222224;
   font-family: 'Ubuntu Mono', monospace;
 }
 
@@ -30,7 +30,12 @@ body {
   color:#59595b;
   position: absolute;
   top: 20px;
-  right: 20px;
+  right: 17px;
+  transition: .5s;
+}
+
+.addItems i:hover {
+  cursor: pointer;
 }
 
 h1 {
@@ -67,5 +72,108 @@ h1 {
 }
 
 .item {
+  width: 500px;
+  height: 90px;
+  position: relative;
+  border-bottom: .2px solid #000;
 
 }
+
+.above {
+  position: absolute;
+  top: 0px;
+  left: 15px;
+  width: 485px;
+  height: 40px;
+}
+
+.above i.co {
+  font-size: 1.5rem;
+  color: #b6b0b0;
+}
+
+.above i.co:hover {
+  cursor: pointer;
+  color: #abffab;
+}
+
+.above input {
+  width: 400px;
+  margin: .1rem .3rem;
+  padding: .1rem .3rem;
+  border: none;
+  height: 40px;
+  outline: none;
+  background-color: transparent;
+  color: #ffffff;
+  font-size: 1.4rem;
+}
+
+.above i.de {
+  font-size: 1.5rem;
+  color: #b6b0b0;
+}
+
+.above i.de:hover {
+  cursor: pointer;
+  color: red;
+}
+
+.middle {
+  font-size: .85rem;
+  color: #a0a0a0;
+  position: absolute;
+  top: 40px;
+  left: 55px;
+}
+
+.below {
+  display: flex;
+  position: absolute;
+  width: 485px;
+  height: 50px;
+  top: 54px;
+  left: 15px;
+}
+
+.addDate {
+  display: flex;
+  margin: .5rem .5rem 1.4rem 2.5rem;
+  padding: 0 .2rem 0 .1rem;
+  border-radius: 3px;
+  background-color:#508080;
+}
+
+.addDate i {
+  font-size: 1rem;
+  margin-top: .05rem;
+  padding-left: .3rem;
+}
+
+.addDate p {
+  font-size: .85rem;
+  margin-top: .2rem;
+  padding-left: .3rem;
+}
+
+.addLoc {
+  display: flex;
+  margin: .5rem .5rem 1.4rem 0rem;
+  padding: 0 .2rem 0 .1rem;
+  border-radius: 3px;
+  background-color: #fff;
+}
+
+
+.addLoc i {
+  font-size: 1rem;
+  margin-top: .05rem;
+  padding-left: .3rem;
+}
+
+.addLoc p {
+  font-size: .85rem;
+  margin-top: .2rem;
+  padding-left: .3rem;
+}
+
