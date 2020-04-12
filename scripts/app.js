@@ -2,16 +2,16 @@ const addItems = document.querySelector(".addItems");
 const content = document.querySelector(".content");
 const header = document.querySelector(".header");
 
-
-function addItemTemplate() {
-  //add item template for todo.
+function checkTemplate() {
   const items = content.querySelectorAll(".item");
   for(let item of items) {
-    if(item.classList.contains("template")) {
-      item.focus();
-      return;
-    }
+    if(item.classList.contains("template")) return true;
   }
+  return false;
+}
+
+//add item template for todo.
+function addItemTemplate() {
   const item =`<div class="item template">
         <div class="above">
           <i class="co fa fa-circle-thin" job="complete" id="0"></i>
@@ -46,7 +46,18 @@ function addItemTemplate() {
 }
 
 addItems.addEventListener("click", () => {
-  addItemTemplate();
+  if(checkTemplate()) {
+    // do not add a new one, when there is an old template todo
+    const items = content.querySelectorAll(".item");
+    for(let item of items) {
+      if(item.classList.contains("template")) {
+        item.focus();
+        return;
+      }
+    }
+  } else {
+    addItemTemplate();
+  }
 });
 
 
