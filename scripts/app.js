@@ -4,7 +4,14 @@ const header = document.querySelector(".header");
 
 
 function addItemTemplate() {
-
+  //add item template for todo.
+  const items = content.querySelectorAll(".item");
+  for(let item of items) {
+    if(item.classList.contains("template")) {
+      item.focus();
+      return;
+    }
+  }
   const item =`<div class="item template">
         <div class="above">
           <i class="co fa fa-circle-thin" job="complete" id="0"></i>
@@ -43,7 +50,7 @@ addItems.addEventListener("click", () => {
 });
 
 
-// for()
+// when move focus off the unedited item, delete it
 content.addEventListener("click", (evt) => {
   let target = evt.target;
   // console.log('target.type', target, target.nodeName);
