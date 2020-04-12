@@ -60,17 +60,22 @@ addItems.addEventListener("click", () => {
 // if unedited todo exsits, when move focus off if, delete it, or we add a new todo
 content.addEventListener("click", (evt) => {
   let editingItem = returnEditingItem();
+  let target = evt.target;
   if(editingItem) {
-    let target = evt.target;
-      if(!editingItem.contains(target) && editingItem.classList.contains("editing")) {
-        editingItem.parentNode.removeChild(editingItem);
-      } else if(editingItem.contains(target) && target.nodeName.toLowerCase() === "div") {
-        editingItem.parentNode.removeChild(editingItem);
-      }
-    } else {
-      addItem();
+    let input = editingItem.querySelector("input");
+    if(input.value) {
+      editingItem.classList.toggle("editing");
+      input.blur();
+      return;
     }
-
+    if(!editingItem.contains(target) && editingItem.classList.contains("editing")) {
+      editingItem.parentNode.removeChild(editingItem);
+    } else if(editingItem.contains(target) && target.nodeName.toLowerCase() === "div") {
+      editingItem.parentNode.removeChild(editingItem);
+    }
+  } else if(target.classList.contains("content")){
+      addItem();
+  }
 });
 
 header.addEventListener("click", () => {
