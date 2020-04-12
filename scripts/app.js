@@ -2,6 +2,9 @@ const addItems = document.querySelector(".addItems");
 const content = document.querySelector(".content");
 const header = document.querySelector(".header");
 
+
+
+
 function returnEditingItem() {
   const items = content.querySelectorAll(".item");
   for(let item of items) {
@@ -12,11 +15,11 @@ function returnEditingItem() {
 
 //add item template for todo.
 function addItem() {
-  const item =`<div class="item editing">
+  const item =`<div class="item editing" id="">
         <div class="above">
-          <i class="co fa fa-circle-thin" job="complete" id="0"></i>
-          <input type="text" placeholder="Add a To Do" id="0">
-          <i class="de fa fa-trash" job="delete" id="0"></i>
+          <i class="co fa fa-circle-thin" job="complete"></i>
+          <input type="text" placeholder="Add a To Do">
+          <i class="de fa fa-trash" job="delete"></i>
         </div>
         <div class="middle">
         <input type="text" placeholder="Notes" value="">
@@ -34,7 +37,7 @@ function addItem() {
           </div>
           <div class="addLoc">
             <i class="fa fa-paper-plane"></i>
-            <input type="text" placeholder="Add Location" id="addLoc">
+            <input type="text" placeholder="Add Location">
           </div>
         </div>
       </div>`;
@@ -98,3 +101,5 @@ content.addEventListener("keypress", (evt) => {
     }
   }
 });
+
+
