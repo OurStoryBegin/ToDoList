@@ -2,24 +2,24 @@ const addItems = document.querySelector(".addItems");
 const content = document.querySelector(".content");
 const header = document.querySelector(".header");
 
-function returnTemplateItem() {
+function returnEditingItem() {
   const items = content.querySelectorAll(".item");
   for(let item of items) {
-    if(item.classList.contains("template")) return item;
+    if(item.classList.contains("editing")) return item;
   }
   return null;
 }
 
 //add item template for todo.
-function addItemTemplate() {
-  const item =`<div class="item template">
+function addItem() {
+  const item =`<div class="item editing">
         <div class="above">
           <i class="co fa fa-circle-thin" job="complete" id="0"></i>
           <input type="text" placeholder="Add a To Do" id="0">
           <i class="de fa fa-trash" job="delete" id="0"></i>
         </div>
         <div class="middle">
-        <input type="text" placeholder="Notes">
+        <input type="text" placeholder="Notes" value="">
         </div>
         <div class="below">
           <div class="addDate">
@@ -40,45 +40,56 @@ function addItemTemplate() {
       </div>`;
   const postion = "beforeend";
   content.insertAdjacentHTML(postion, item);
-  const template = document.querySelector(".template");
-  const todoInput = template.querySelector("input").focus();
+  const editing = document.querySelector(".editing");
+  const todoInput = editing.querySelector("input").focus();
   // console.log(todoInput === document.activeElement);
 }
 
 addItems.addEventListener("click", () => {
   // template item
-  let templateItem = returnTemplateItem();
-  if(templateItem) {
+  let editingItem = returnEditingItem();
+  if(editingItem) {
     // do not add a new one, when there is an old template todo
-    let input = templateItem.querySelector("input");
+    let input = editingItem.querySelector("input");
     input.focus();
   } else {
-    addItemTemplate();
+    addItem();
   }
 });
 
 // if unedited todo exsits, when move focus off if, delete it, or we add a new todo
 content.addEventListener("click", (evt) => {
-  let templateItem = returnTemplateItem();
-  if(templateItem) {
+  let editingItem = returnEditingItem();
+  if(editingItem) {
     let target = evt.target;
-      if(!templateItem.contains(target) && templateItem.classList.contains("template")) {
-        templateItem.parentNode.removeChild(templateItem);
-      } else if(templateItem.contains(target) && target.nodeName.toLowerCase() === "div") {
-        templateItem.parentNode.removeChild(templateItem);
+      if(!editingItem.contains(target) && editingItem.classList.contains("editing")) {
+        editingItem.parentNode.removeChild(editingItem);
+      } else if(editingItem.contains(target) && target.nodeName.toLowerCase() === "div") {
+        editingItem.parentNode.removeChild(editingItem);
       }
     } else {
-      addItemTemplate();
+      addItem();
     }
 
 });
 
 header.addEventListener("click", () => {
-  let templateItem = returnTemplateItem();
-  if(templateItem) {
-    let input = templateItem.querySelector("input");
+  let editingItem = returnEditingItem();
+  if(editingItem) {
+    let input = editingItem.querySelector("input");
     input.focus();
   }
-})
+});
 
 // 事件传播机制capturing , bubbling
+// todo: edit todo
+content.addEventListener("keypress", (evt) => {
+  let editingItem = returnEditingItem();
+  if(editingItem) {
+    let input = editingItem.querySelector("input");
+    if(input.value && evt.keyCode == 13) {
+      editingItem.classList.toggle("editing");
+      input.blur();
+    }
+  }
+});
