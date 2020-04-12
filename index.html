@@ -29,11 +29,17 @@
         <div class="below">
           <div class="addDate">
             <i class="fa fa-keyboard-o"></i>
-            <p>Add Date</p>
+            <label for="date-select"></label>
+            <select name="dates" id="date-select">
+              <option value="">Add Date</option>
+              <option value="today">Today</option>
+              <option value="tomorrow">Tomorrow</option>
+              <option value="custom">Custom</option>
+            </select>
           </div>
           <div class="addLoc">
             <i class="fa fa-paper-plane"></i>
-            <p>Add Location</p>
+            <input type="text" placeholder="Add Location" id="addLoc">
           </div>
         </div>
 
