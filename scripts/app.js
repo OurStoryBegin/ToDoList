@@ -2,12 +2,12 @@ const addItems = document.querySelector(".addItems");
 const content = document.querySelector(".content");
 const header = document.querySelector(".header");
 
-function checkTemplate() {
+function returnTemplateItem() {
   const items = content.querySelectorAll(".item");
   for(let item of items) {
-    if(item.classList.contains("template")) return true;
+    if(item.classList.contains("template")) return item;
   }
-  return false;
+  return null;
 }
 
 //add item template for todo.
@@ -46,38 +46,39 @@ function addItemTemplate() {
 }
 
 addItems.addEventListener("click", () => {
-  if(checkTemplate()) {
+  // template item
+  let templateItem = returnTemplateItem();
+  if(templateItem) {
     // do not add a new one, when there is an old template todo
-    const items = content.querySelectorAll(".item");
-    for(let item of items) {
-      if(item.classList.contains("template")) {
-        item.focus();
-        return;
-      }
-    }
+    let input = templateItem.querySelector("input");
+    input.focus();
   } else {
     addItemTemplate();
   }
 });
 
-
-// when move focus off the unedited item, delete it
+// if unedited todo exsits, when move focus off if, delete it, or we add a new todo
 content.addEventListener("click", (evt) => {
-  let target = evt.target;
-  // console.log('target.type', target, target.nodeName);
-  // evt.preventDefault();
-  const items = document.querySelectorAll(".item");
-  for(let item of items) {
-    if(!item.contains(target) && item.classList.contains("template")) {
-      item.parentNode.removeChild(item);
-    } else if(item.contains(target) && target.nodeName.toLowerCase() === "div") {
-      item.parentNode.removeChild(item);
+  let templateItem = returnTemplateItem();
+  if(templateItem) {
+    let target = evt.target;
+      if(!templateItem.contains(target) && templateItem.classList.contains("template")) {
+        templateItem.parentNode.removeChild(templateItem);
+      } else if(templateItem.contains(target) && target.nodeName.toLowerCase() === "div") {
+        templateItem.parentNode.removeChild(templateItem);
+      }
+    } else {
+      addItemTemplate();
     }
-  }
+
 });
 
-// header.addEventListener("click", )
-
-
+header.addEventListener("click", () => {
+  let templateItem = returnTemplateItem();
+  if(templateItem) {
+    let input = templateItem.querySelector("input");
+    input.focus();
+  }
+})
 
 // 事件传播机制capturing , bubbling
