@@ -129,6 +129,8 @@ h1 {
 }
 
 .middle input {
+  width: 400px;
+  outline: none;
   background-color: transparent;
   border: none;
 }
