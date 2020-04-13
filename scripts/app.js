@@ -182,13 +182,16 @@ content.addEventListener("keypress", (evt) => {
 content.addEventListener("click", (evt) => {
   let target = evt.target;
   if(target.getAttribute("job") === "complete") {
-    target.classList.toggle("fa-circle-thin");
-    target.classList.toggle("fa-check-circle");
-    target.nextElementSibling.classList.toggle("line-through");
-    let item = target.parentNode.parentNode;
-    let id = item.getAttribute("id");
-    TODOS[id].done = true;
-    countTodos(total, TODOS);
+    let input = target.nextElementSibling;
+    let todo = input.value
+    if(todo) {
+      target.classList.toggle("fa-circle-thin");
+      target.classList.toggle("fa-check-circle");
+      input.classList.toggle("line-through");
+      let id = target.parentNode.parentNode.getAttribute("id");
+      TODOS[id].done = true;
+      countTodos(total, TODOS);
+    }
   }
 });
 
@@ -205,5 +208,6 @@ content.addEventListener("click", (evt) => {
     for(let i = 0; i < TODOS.length; i++) {
       TODOS[i].id = i;
     }
+    preItem = null;
   }
 })
