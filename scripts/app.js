@@ -2,7 +2,13 @@ const addItems = document.querySelector(".addItems");
 const content = document.querySelector(".content");
 const header = document.querySelector(".header");
 
+const CHECK = "fa-check-circle";
+const UNCHECK = "fa-circle-thin";
+const LINETHROUGH = "line-through";
 
+
+let TODOS = [];
+let preElemTodo = null;
 
 
 function returnEditingItem() {
@@ -14,8 +20,8 @@ function returnEditingItem() {
 }
 
 //add item template for todo.
-function addItem() {
-  const item =`<div class="item editing" id="">
+function addItem(id) {
+  const item =`<div class="item editing" id="${id}">
         <div class="above">
           <i class="co fa fa-circle-thin" job="complete"></i>
           <input type="text" placeholder="Add a To Do">
@@ -37,7 +43,7 @@ function addItem() {
           </div>
           <div class="addLoc">
             <i class="fa fa-paper-plane"></i>
-            <input type="text" placeholder="Add Location">
+            <input type="text" placeholder="Add Location" value="">
           </div>
         </div>
       </div>`;
@@ -45,7 +51,7 @@ function addItem() {
   content.insertAdjacentHTML(postion, item);
   const editing = document.querySelector(".editing");
   const todoInput = editing.querySelector("input").focus();
-  // console.log(todoInput === document.activeElement);
+  return editing;
 }
 
 addItems.addEventListener("click", () => {
@@ -56,28 +62,53 @@ addItems.addEventListener("click", () => {
     let input = editingItem.querySelector("input");
     input.focus();
   } else {
-    addItem();
+    preItem = addItem(TODOS.length);
   }
 });
 
+let preItem = null;
 // if unedited todo exsits, when move focus off if, delete it, or we add a new todo
 content.addEventListener("click", (evt) => {
-  let editingItem = returnEditingItem();
   let target = evt.target;
-  if(editingItem) {
-    let input = editingItem.querySelector("input");
-    if(input.value) {
-      editingItem.classList.toggle("editing");
-      input.blur();
+  const items = content.querySelectorAll(".item");
+  for(let item of items) {
+    if(item.contains(document.activeElement)) {
+      if(!item.classList.contains("editing")) item.classList.toggle("editing");
+    } else if(item.classList.contains("editing")) {
+      preItem = item;
+      item.classList.toggle("editing");
+    }
+  }
+  console.log(preItem);
+  // preItem = returnEditingItem();
+  console.log('bool:', preItem && !preItem.contains(target));
+  if(preItem && !preItem.contains(target)) {
+    let todo = preItem.querySelector(".above input").value;
+    if(!todo) {
+      preItem.parentNode.removeChild(preItem);
+      preItem = null;
       return;
     }
-    if(!editingItem.contains(target) && editingItem.classList.contains("editing")) {
-      editingItem.parentNode.removeChild(editingItem);
-    } else if(editingItem.contains(target) && target.nodeName.toLowerCase() === "div") {
-      editingItem.parentNode.removeChild(editingItem);
+    let id = parseInt(preItem.getAttribute("id"));
+    let notes = preItem.querySelector(".middle input").value;
+    let date = preItem.querySelector("#date-select").value;
+    let loc = preItem.querySelector(".addLoc input").value;
+    console.log("itemInfo: ", todo, id, false,  notes, date, loc);
+    TODOS[id] = {
+      todo: todo,
+      id: id,
+      done: false,
+      notes: notes,
+      date: date,
+      loc: loc
+    };
+    if(preItem.classList.contains("editing")) {
+      preItem.classList.toggle("editing");
     }
-  } else if(target.classList.contains("content")){
-      addItem();
+    preItem = null;
+    return;
+  } else if(!preItem && target.classList.contains("content")){
+    preItem = addItem(TODOS.length);
   }
 });
 
@@ -89,7 +120,6 @@ header.addEventListener("click", () => {
   }
 });
 
-// 事件传播机制capturing , bubbling
 // todo: edit todo
 content.addEventListener("keypress", (evt) => {
   let editingItem = returnEditingItem();
@@ -98,8 +128,21 @@ content.addEventListener("keypress", (evt) => {
     if(input.value && evt.keyCode == 13) {
       editingItem.classList.toggle("editing");
       input.blur();
+      let id = parseInt(editingItem.getAttribute("id"));
+      let done = false;
+      let notes = editingItem.querySelector(".middle input").value;
+      let date = editingItem.querySelector("#date-select").value;
+      let loc = editingItem.querySelector(".addLoc input").value;
+      TODOS[id] = {
+        todo: input.value,
+        id: id,
+        done: done,
+        notes: notes,
+        date: date,
+        loc: loc
+      };
+      addItem(TODOS.length);
     }
   }
 });
-
 
