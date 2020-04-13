@@ -28,7 +28,7 @@ function addItem(id) {
           <i class="de fa fa-trash" job="delete"></i>
         </div>
         <div class="middle">
-        <input type="text" placeholder="Notes" value="">
+        <input type="text" placeholder="Notes" value="" class="line-through">
         </div>
         <div class="below">
           <div class="addDate">
@@ -169,6 +169,19 @@ content.addEventListener("keypress", (evt) => {
       let total = header.querySelector(".total");
       total.innerHTML = TODOS.length;
     }
+  }
+});
+
+// done  a todo
+content.addEventListener("click", (evt) => {
+  let target = evt.target;
+  if(target.getAttribute("job") === "complete") {
+    target.classList.toggle("fa-circle-thin");
+    target.classList.toggle("fa-check-circle");
+    target.nextElementSibling.classList.toggle("line-through");
+    let item = target.parentNode.parentNode;
+    let id = item.getAttribute("id");
+    TODOS[id].done = true;
   }
 });
 

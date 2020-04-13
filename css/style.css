@@ -107,7 +107,7 @@ h1 {
   height: 40px;
   outline: none;
   background-color: transparent;
-  color: gray;
+  color: #fff;
   font-size: 1.4rem;
 }
 
@@ -192,7 +192,7 @@ h1 {
   background-color: transparent;
 }
 
-.lineTrough {
-  /* color: gray; */
+.above .line-through {
+  color: gray;
   text-decoration: line-through;
 }
