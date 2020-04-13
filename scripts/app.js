@@ -102,6 +102,9 @@ content.addEventListener("click", (evt) => {
       date: date,
       loc: loc
     };
+    let total = header.querySelector(".total");
+    total.innerHTML = TODOS.length;
+
     if(preItem.classList.contains("editing")) {
       preItem.classList.toggle("editing");
     }
@@ -112,6 +115,7 @@ content.addEventListener("click", (evt) => {
   }
 });
 
+//when mouse move in header, keep focus editing item
 header.addEventListener("click", () => {
   let editingItem = returnEditingItem();
   if(editingItem) {
@@ -142,6 +146,8 @@ content.addEventListener("keypress", (evt) => {
         loc: loc
       };
       addItem(TODOS.length);
+      let total = header.querySelector(".total");
+      total.innerHTML = TODOS.length;
     }
   }
 });
