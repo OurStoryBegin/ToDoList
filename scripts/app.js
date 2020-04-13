@@ -60,7 +60,27 @@ addItems.addEventListener("click", () => {
   if(editingItem) {
     // do not add a new one, when there is an old template todo
     let input = editingItem.querySelector("input");
-    input.focus();
+    let todo = input.value;
+    if(todo) {
+      editingItem.classList.toggle("editing");
+      let id = parseInt(editingItem.getAttribute("id"));
+      let notes = editingItem.querySelector(".middle input").value;
+      let date = editingItem.querySelector("#date-select").value;
+      let loc = editingItem.querySelector(".addLoc input").value;
+      // console.log("itemInfo: ", todo, id, false,  notes, date, loc);
+      TODOS[id] = {
+        todo: todo,
+        id: id,
+        done: false,
+        notes: notes,
+        date: date,
+        loc: loc
+      };
+      preItem = addItem(TODOS.length);
+      input.blur();
+    } else {
+      input.focus();
+    }
   } else {
     preItem = addItem(TODOS.length);
   }
@@ -79,9 +99,9 @@ content.addEventListener("click", (evt) => {
       item.classList.toggle("editing");
     }
   }
-  console.log(preItem);
+  // console.log(preItem);
   // preItem = returnEditingItem();
-  console.log('bool:', preItem && !preItem.contains(target));
+  // console.log('bool:', preItem && !preItem.contains(target));
   if(preItem && !preItem.contains(target)) {
     let todo = preItem.querySelector(".above input").value;
     if(!todo) {
@@ -93,7 +113,7 @@ content.addEventListener("click", (evt) => {
     let notes = preItem.querySelector(".middle input").value;
     let date = preItem.querySelector("#date-select").value;
     let loc = preItem.querySelector(".addLoc input").value;
-    console.log("itemInfo: ", todo, id, false,  notes, date, loc);
+    // console.log("itemInfo: ", todo, id, false,  notes, date, loc);
     TODOS[id] = {
       todo: todo,
       id: id,
