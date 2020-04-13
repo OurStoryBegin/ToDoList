@@ -1,6 +1,7 @@
 const addItems = document.querySelector(".addItems");
 const content = document.querySelector(".content");
 const header = document.querySelector(".header");
+const total = document.querySelector(".total");
 
 const CHECK = "fa-check-circle";
 const UNCHECK = "fa-circle-thin";
@@ -10,6 +11,13 @@ const LINETHROUGH = "line-through";
 let TODOS = [];
 let preElemTodo = null;
 
+function countTodos(element, arr) {
+  let finished = 0;
+  for(let tmp of arr) {
+    if(tmp.done) finished++;
+  }
+  element.innerHTML = `${finished}/${arr.length}`;
+}
 
 function returnEditingItem() {
   const items = content.querySelectorAll(".item");
@@ -76,6 +84,7 @@ addItems.addEventListener("click", () => {
         date: date,
         loc: loc
       };
+      countTodos(total, TODOS);
       preItem = addItem(TODOS.length);
       input.blur();
     } else {
@@ -122,9 +131,7 @@ content.addEventListener("click", (evt) => {
       date: date,
       loc: loc
     };
-    let total = header.querySelector(".total");
-    total.innerHTML = TODOS.length;
-
+    countTodos(total, TODOS);
     if(preItem.classList.contains("editing")) {
       preItem.classList.toggle("editing");
     }
@@ -165,9 +172,8 @@ content.addEventListener("keypress", (evt) => {
         date: date,
         loc: loc
       };
+      countTodos(total, TODOS);
       addItem(TODOS.length);
-      let total = header.querySelector(".total");
-      total.innerHTML = TODOS.length;
     }
   }
 });
@@ -182,6 +188,22 @@ content.addEventListener("click", (evt) => {
     let item = target.parentNode.parentNode;
     let id = item.getAttribute("id");
     TODOS[id].done = true;
+    countTodos(total, TODOS);
   }
 });
 
+// delete a todo
+content.addEventListener("click", (evt) => {
+  let target = evt.target;
+  if(target.getAttribute("job") === "delete") {
+    let item = target.parentNode.parentNode;
+    let id = item.getAttribute("id");
+    item.parentNode.removeChild(item);
+    TODOS.splice(id, 1);
+    countTodos(total, TODOS);
+    // correct index of todos in TODOS
+    for(let i = 0; i < TODOS.length; i++) {
+      TODOS[i].id = i;
+    }
+  }
+})
