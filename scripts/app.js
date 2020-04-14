@@ -164,19 +164,3 @@ content.addEventListener("click", (evt) => {
   }
 });
 
-content.addEventListener("dblclick", (evt) => {
-  console.log("dbl");
-  let target = evt.target;
-  if(target.getAttribute("job") === "complete") {
-    let input = target.nextElementSibling;
-    if(input.value) {
-      target.classList.toggle("fa-circle-thin");
-      target.classList.toggle("fa-check-circle");
-      input.classList.toggle("line-through");
-      let id = target.parentNode.getAttribute("id");
-      TODOS[id].done = true;
-      target.parentNode.parentNode.removeChild(target.parentNode);
-      countTodos(total, TODOS);
-    }
-  }
-});
