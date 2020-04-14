@@ -9,14 +9,14 @@ const LINETHROUGH = "line-through";
 
 
 let TODOS = [];
-let preElemTodo = null;
+let preItem = null;
 
 function countTodos(element, arr) {
   let finished = 0;
   for(let tmp of arr) {
-    if(tmp.done) finished++;
+    if(!tmp.done) finished++;
   }
-  element.innerHTML = `${finished}/${arr.length}`;
+  element.innerHTML = finished;
 }
 
 function returnEditingItem() {
@@ -29,32 +29,12 @@ function returnEditingItem() {
 
 //add item template for todo.
 function addItem(id) {
-  const item =`<div class="item editing" id="${id}">
-        <div class="above">
-          <i class="co fa fa-circle-thin" job="complete"></i>
-          <input type="text" placeholder="Add a To Do">
-          <i class="de fa fa-trash" job="delete"></i>
-        </div>
-        <div class="middle">
-        <input type="text" placeholder="Notes" value="" class="line-through">
-        </div>
-        <div class="below">
-          <div class="addDate">
-            <i class="fa fa-keyboard-o"></i>
-            <label for="date-select"></label>
-            <select name="dates" id="date-select">
-              <option value="">Add Date</option>
-              <option value="today">Today</option>
-              <option value="tomorrow">Tomorrow</option>
-              <option value="custom">Custom</option>
-            </select>
-          </div>
-          <div class="addLoc">
-            <i class="fa fa-paper-plane"></i>
-            <input type="text" placeholder="Add Location" value="">
-          </div>
-        </div>
-      </div>`;
+  const item =
+        `<div class="item editing" id="${id}">
+<i class="co fa fa-circle-thin" job="complete"></i>
+<input type="text" placeholder="Add a To Do">
+</div>`;
+
   const postion = "beforeend";
   content.insertAdjacentHTML(postion, item);
   const editing = document.querySelector(".editing");
@@ -63,7 +43,6 @@ function addItem(id) {
 }
 
 addItems.addEventListener("click", () => {
-  // template item
   let editingItem = returnEditingItem();
   if(editingItem) {
     // do not add a new one, when there is an old template todo
@@ -72,21 +51,14 @@ addItems.addEventListener("click", () => {
     if(todo) {
       editingItem.classList.toggle("editing");
       let id = parseInt(editingItem.getAttribute("id"));
-      let notes = editingItem.querySelector(".middle input").value;
-      let date = editingItem.querySelector("#date-select").value;
-      let loc = editingItem.querySelector(".addLoc input").value;
-      // console.log("itemInfo: ", todo, id, false,  notes, date, loc);
       TODOS[id] = {
         todo: todo,
         id: id,
         done: false,
-        notes: notes,
-        date: date,
-        loc: loc
       };
+      input.blur();
       countTodos(total, TODOS);
       preItem = addItem(TODOS.length);
-      input.blur();
     } else {
       input.focus();
     }
@@ -95,7 +67,6 @@ addItems.addEventListener("click", () => {
   }
 });
 
-let preItem = null;
 // if unedited todo exsits, when move focus off if, delete it, or we add a new todo
 content.addEventListener("click", (evt) => {
   let target = evt.target;
@@ -104,37 +75,25 @@ content.addEventListener("click", (evt) => {
     if(item.contains(document.activeElement)) {
       if(!item.classList.contains("editing")) item.classList.toggle("editing");
     } else if(item.classList.contains("editing")) {
+      // last todo
       preItem = item;
       item.classList.toggle("editing");
     }
   }
-  // console.log(preItem);
-  // preItem = returnEditingItem();
-  // console.log('bool:', preItem && !preItem.contains(target));
   if(preItem && !preItem.contains(target)) {
-    let todo = preItem.querySelector(".above input").value;
+    let todo = preItem.querySelector("input").value;
     if(!todo) {
       preItem.parentNode.removeChild(preItem);
       preItem = null;
       return;
     }
     let id = parseInt(preItem.getAttribute("id"));
-    let notes = preItem.querySelector(".middle input").value;
-    let date = preItem.querySelector("#date-select").value;
-    let loc = preItem.querySelector(".addLoc input").value;
-    // console.log("itemInfo: ", todo, id, false,  notes, date, loc);
     TODOS[id] = {
       todo: todo,
       id: id,
       done: false,
-      notes: notes,
-      date: date,
-      loc: loc
     };
     countTodos(total, TODOS);
-    if(preItem.classList.contains("editing")) {
-      preItem.classList.toggle("editing");
-    }
     preItem = null;
     return;
   } else if(!preItem && target.classList.contains("content")){
@@ -160,54 +119,32 @@ content.addEventListener("keypress", (evt) => {
       editingItem.classList.toggle("editing");
       input.blur();
       let id = parseInt(editingItem.getAttribute("id"));
-      let done = false;
-      let notes = editingItem.querySelector(".middle input").value;
-      let date = editingItem.querySelector("#date-select").value;
-      let loc = editingItem.querySelector(".addLoc input").value;
       TODOS[id] = {
         todo: input.value,
         id: id,
-        done: done,
-        notes: notes,
-        date: date,
-        loc: loc
+        done: false,
       };
       countTodos(total, TODOS);
       addItem(TODOS.length);
+      preItem = null;
     }
   }
 });
 
-// done  a todo
+// done  a todo, then delete it
 content.addEventListener("click", (evt) => {
   let target = evt.target;
   if(target.getAttribute("job") === "complete") {
     let input = target.nextElementSibling;
-    let todo = input.value
-    if(todo) {
+    if(input.value) {
       target.classList.toggle("fa-circle-thin");
       target.classList.toggle("fa-check-circle");
       input.classList.toggle("line-through");
-      let id = target.parentNode.parentNode.getAttribute("id");
+      let id = target.parentNode.getAttribute("id");
       TODOS[id].done = true;
+      target.parentNode.parentNode.removeChild(target.parentNode);
       countTodos(total, TODOS);
     }
   }
 });
 
-// delete a todo
-content.addEventListener("click", (evt) => {
-  let target = evt.target;
-  if(target.getAttribute("job") === "delete") {
-    let item = target.parentNode.parentNode;
-    let id = item.getAttribute("id");
-    item.parentNode.removeChild(item);
-    TODOS.splice(id, 1);
-    countTodos(total, TODOS);
-    // correct index of todos in TODOS
-    for(let i = 0; i < TODOS.length; i++) {
-      TODOS[i].id = i;
-    }
-    preItem = null;
-  }
-})
