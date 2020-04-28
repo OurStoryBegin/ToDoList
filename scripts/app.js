@@ -11,9 +11,10 @@ const LINETHROUGH = "line-through";
 let TODOS;
 let preItem = null;
 
-let todos = localStorage.getItem("TODO");
+let todos = localStorage.getItem("TODOS");
 if(todos) {
   TODOS = JSON.parse(todos);
+  console.log(TODOS);
   loadTodos(TODOS);
 } else {
   TODOS = [];
@@ -21,7 +22,7 @@ if(todos) {
 
 function loadTodos(arr) {
   arr.forEach(item => {
-    if(!item.done) addItem(item.id);
+    if(!item.done) addItem(item.id, item.todo);
   });
 }
 
@@ -43,11 +44,11 @@ function returnEditingItem() {
 }
 
 //add item template for todo.
-function addItem(id) {
+function addItem(id, todo='', done=false) {
     const item =
         `<div class="item editing" id="${id}">
 <i class="co fa fa-circle-thin" job="complete"></i>
-<input type="text" placeholder="Add a To Do">
+<input type="text" placeholder="Add a To Do" value=${todo}>
 </div>`;
 
   const postion = "beforeend";
@@ -74,6 +75,7 @@ addItems.addEventListener("click", () => {
       };
       input.blur();
       countTodos(total, TODOS);
+      localStorage.setItem("TODOS", JSON.stringify(TODOS));
       preItem = addItem(TODOS.length);
     } else {
       input.focus();
@@ -110,6 +112,7 @@ content.addEventListener("click", (evt) => {
       done: false,
     };
     countTodos(total, TODOS);
+    localStorage.setItem("TODOS", JSON.stringify(TODOS));
     preItem = null;
     return;
   } else if(!preItem && target.classList.contains("content")){
@@ -141,6 +144,7 @@ content.addEventListener("keypress", (evt) => {
         done: false,
       };
       countTodos(total, TODOS);
+      localStorage.setItem("TODOS", JSON.stringify(TODOS));
       addItem(TODOS.length);
       preItem = null;
     }
@@ -158,6 +162,7 @@ content.addEventListener("click", (evt) => {
       input.classList.toggle("line-through");
       let id = target.parentNode.getAttribute("id");
       TODOS[id].done = true;
+      localStorage.setItem("TODOS", JSON.stringify(TODOS));
       target.parentNode.parentNode.removeChild(target.parentNode);
       countTodos(total, TODOS);
     }
